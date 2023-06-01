@@ -1,0 +1,211 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="hero hero3">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<!-- <h1> movie listing - list</h1>
+				<ul class="breadcumb">
+					<li class="active"><a href="#">Home</a></li>
+					<li> <span class="ion-ios-arrow-right"></span> movie listing</li>
+				</ul> -->
+			</div>
+		</div>
+	</div>
+</div>
+<!-- celebrity single section-->
+
+<div class="page-single movie-single cebleb-single">
+	<div class="container">
+		<div class="row ipad-width">
+			<div class="col-md-4 col-sm-12 col-xs-12">
+				<div class="mv-ceb">
+                    {% if celeb.photo %}
+                        <img src="{{ celeb.photo.url }}" alt="">
+                    {% else %}
+                        <img src="{% static 'images/uploads/user-img.png' %}" alt="" width="70" height="70">
+                    {% endif %}
+				</div>
+			</div>
+			<div class="col-md-8 col-sm-12 col-xs-12">
+				<div class="movie-single-ct">
+					<h1 class="bd-hd">{{ celeb.name }}</h1>
+					<p class="ceb-single" >{{ celeb.job|capfirst }}</p>
+					<div class="social-link cebsingle-socail">
+						<a href="#"><i class="ion-social-facebook"></i></a>
+						<a href="#"><i class="ion-social-twitter"></i></a>
+						<a href="#"><i class="ion-social-googleplus"></i></a>
+						<a href="#"><i class="ion-social-linkedin"></i></a>
+					</div>
+					<div class="movie-tabs">
+						<!-- Displaying a list of movies who-->
+						<div class="tabs">
+							<ul class="tab-links tabs-mv">
+								<li class="active"><a href="#overviewceb">Overview</a></li>
+								<li><a href="#filmography">filmography</a></li>                        
+							</ul>
+						    <div class="tab-content">
+						        <div id="overviewceb" class="tab active">
+						            <div class="row">
+						            	<div class="col-md-8 col-sm-12 col-xs-12">
+						            		<p>{{ celeb.bio }}</p>
+											<div class="title-hd-sm">
+												<h4>filmography</h4>
+												<a href="#" class="time">Full Filmography<i class="ion-ios-arrow-right"></i></a>
+											</div>
+											<!-- movie cast -->
+											<div class="mvcast-item">
+												{% if movies %}
+													<h2>Movies</h2>
+													{% for movie in movies %}
+														<div class="cast-it">
+															<div class="cast-left cebleb-film">
+																<img src="{{ movie.image.url }}" alt="{{ movie.title }}" width="55" height="77">
+																<div>
+																	<a href="{{ movie.get_absolute_url }}">{{ movie.title }}</a>
+																	<p class="time">
+																		{% for cast in movie.casts.all %}
+																			{% if cast.person == celeb %}
+																				{{ cast.character_name }}
+																			{% endif %}
+																		{% endfor %}
+																	</p>
+																</div>
+															</div>
+															<p>{{ movie.release_date.year }}</p>
+														</div>
+													{% endfor %}
+												{% else %}
+													<p>No movies found for this person.</p>
+												{% endif %}
+
+												{% if series %}
+													<h2>Series</h2>
+													{% for serie in series %}
+														<div class="cast-it">
+															<div class="cast-left cebleb-film">
+																<img src="{{ serie.image.url }}" width="55" height="77">
+																<div>
+																	<a href="{{ serie.get_absolute_url }}">{{ serie.title }}</a>
+																	<p class="time">
+																		{% for cast in serie.casts.all %}
+																			{% if cast.person == celeb %}
+																				{{ cast.character_name }}
+																			{% endif %}
+																		{% endfor %}
+																	</p>
+																</div>
+															</div>
+															<p>{{ serie.status|capfirst }}</p>
+														</div>
+													{% endfor %}
+												{% else %}
+													<p>No series found for this person.</p>
+												{% endif %}
+											</div>
+											<!-- end of movie cast -->
+						            	</div>
+										<!-- Celebrity Info -->
+						            	<div class="col-md-4 col-xs-12 col-sm-12">
+						            		<div class="sb-it">
+						            			<h6>Fullname:  </h6>
+						            			<p>{{ celeb.name }}</p>
+						            		</div>
+						            		<div class="sb-it">
+						            			<h6>Date of Birth: </h6>
+						            			<p>{{ celeb.birthday|date:'F j, Y' }}</p>
+						            		</div>
+                                            <div class="sb-it">
+						            			<h6>Country:</h6>
+                                                <p>
+                                                    {% for country in countries %}
+                                                            <a href="#">{{ country }}</a>
+                                                    {% endfor %}  
+                                                </p>  
+						            		</div>
+						            		<div class="sb-it">
+						            			<h6>Keywords:</h6>
+						            			<p class="tags">
+						            				<span class="time"><a href="#">jackman</a></span>
+						            			</p>
+						            		</div>
+						            	</div>
+										<!-- End of Celebrity Info -->
+
+						            </div>
+						        </div>
+					       	 	<div id="filmography" class="tab">
+						        	<div class="row">
+						            	<div class="rv-hd">
+						            		<div>
+						            			<h2>Projects of {{ celeb.name }} :</h2>
+						            		</div>
+										
+						            	</div>
+										<!-- movie cast -->
+										<div class="mvcast-item">											
+											{% if movies %}
+												<h2>Movies</h2>
+												{% for movie in movies %}
+													<div class="cast-it">
+														<div class="cast-left cebleb-film">
+															<img src="{{ movie.image.url }}" alt="{{ movie.title }}" width="55" height="77">
+															<div>
+																<a href="{{ movie.get_absolute_url }}">{{ movie.title }}</a>
+																<p class="time">
+																{% for cast in movie.casts.all %}
+																	{% if cast.person == celeb %}
+																		{{ cast.character_name }}
+																	{% endif %}
+																{% endfor %}
+																</p>
+															</div>
+														</div>
+														<p>{{ movie.release_date.year }}</p>
+													</div>
+												{% endfor %}
+											{% else %}
+												<p>No movies found for this person.</p>
+											{% endif %}
+
+											{% if series %}
+											<h2>Series</h2>
+											{% for serie in series %}
+												<div class="cast-it">
+													<div class="cast-left cebleb-film">
+														<img src="{{ serie.image.url }}" width="55" height="77">
+														<div>
+															<a href="{{ serie.get_absolute_url }}">{{ serie.title }}</a>
+															<p class="time">
+															{% for cast in serie.casts.all %}
+																{% if cast.person == celeb %}
+																	{{ cast.character_name }}
+																{% endif %}
+															{% endfor %}
+															</p>
+														</div>
+													</div>
+													<p>{{ serie.status|capfirst}}</p>
+												</div>
+											{% endfor %}
+											{% else %}
+												<p>No series found for this person.</p>
+											{% endif %}
+
+										</div>
+						            </div>
+					       	 	</div>
+						    </div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	</div>
+</div>
+<!-- celebrity single section-->
+{% endblock %}

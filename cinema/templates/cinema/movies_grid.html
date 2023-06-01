@@ -1,0 +1,184 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+
+<div class="hero common-hero">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="hero-ct">
+					<h1> movie listing - grid</h1>
+					<ul class="breadcumb">
+						<li class="active"><a href="#">Home</a></li>
+						<li> <span class="ion-ios-arrow-right"></span> movie listing</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="page-single">
+	<div class="container">
+		<div class="row ipad-width">
+
+			<!-- Movies list part -->
+			<div class="col-md-8 col-sm-12 col-xs-12">
+				<div class="topbar-filter">
+					<p>Found <span>{{ movies_count }} movies</span> in total</p>
+					<label>Sort by:</label>
+					<select>
+						<option value="popularity">Popularity Descending</option>
+						<option value="popularity">Popularity Ascending</option>
+						<option value="rating">Rating Descending</option>
+						<option value="rating">Rating Ascending</option>
+						<option value="date">Release date Descending</option>
+						<option value="date">Release date Ascending</option>
+					</select>
+					<a href="{% url 'cinema:movies_list' %}" class="list"><i class="ion-ios-list-outline "></i></a>
+					<a  href="{% url 'cinema:movies_grid' %}" class="grid"><i class="ion-grid active"></i></a>
+				</div>
+				<div class="flex-wrap-movielist">
+						{% for movie in movies %}
+						<div class="movie-item-style-2 movie-item-style-1">
+							<img src="{{ movie.image.url }}"alt="">
+							<div class="hvr-inner">
+	            				<a  href="{{ movie.get_absolute_url }}"> Read more <i class="ion-android-arrow-dropright"></i> </a>
+	            			</div>
+							<div class="mv-item-infor">
+								<h6><a href="{{ movie.get_absolute_url }}">{{ movie.title }}</a></h6>
+								<p class="rate"><i class="ion-android-star"></i><span>{{ movie.rating}}</span> /10</p>
+							</div>
+						</div>	
+						{% endfor %}				
+				</div>		
+				<ul class="pagination">
+					{% if page_obj.has_previous %}
+						<a href="?page=1">&laquo; first &nbsp; </a>
+						<li class="icon-prev"><a href="?page={{ page_obj.previous_page_number }}"><i class="ion-ios-arrow-left"></i></a></li>
+					{% else %}
+						<li class="icon-prev disabled"><span><i class="ion-ios-arrow-left"></i></span></li>
+					{% endif %}
+				
+					{% for page_num in page_obj.paginator.page_range %}
+						{% if page_obj.number == page_num %}
+							<li class="active"><a>{{ page_num }} <span class="sr-only">(current)</span></a></li>
+						{% elif page_num > page_obj.number|add:-3 and page_num < page_obj.number|add:3 %}
+							<li><a href="?page={{ page_num }}">{{ page_num }}</a></li>
+						{% endif %}
+					{% endfor %}
+				
+				
+					{% if page_obj.has_next %}
+						<li class="icon-next"><a href="?page={{ page_obj.next_page_number }}"><i class="ion-ios-arrow-right"></i></a></li>
+						<a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+					{% else %}
+						<li class="icon-next disabled"><span><i class="ion-ios-arrow-right"></i></span></li>
+					{% endif %}
+				</ul>
+			</div>
+			<!-- end of Movies list part -->
+
+			<!-- Side bar -->			
+			<div class="col-md-4 col-sm-12 col-xs-12">
+				<div class="sidebar">
+
+					<!-- Search Bar-2 list part in side bar -->	
+					<div class="searh-form">
+						<h4 class="sb-title">Search for movie</h4>
+						<form class="form-style-1" action="#">
+							<div class="row">
+								<div class="col-md-12 form-it">
+									<label>Movie name</label>
+									<input type="text" placeholder="Enter keywords">
+								</div>
+								<div class="col-md-12 form-it">
+									<label>Genres & Subgenres</label>
+									<div class="group-ip">
+										<select
+											name="skills" multiple="" class="ui fluid dropdown">
+											<option value="">Enter to filter genres</option>
+											<option value="Action1">Action 1</option>
+					                        <option value="Action2">Action 2</option>
+					                        <option value="Action3">Action 3</option>
+					                        <option value="Action4">Action 4</option>
+					                        <option value="Action5">Action 5</option>
+										</select>
+									</div>	
+								</div>
+								<div class="col-md-12 form-it">
+									<label>Rating Range</label>
+									<select>
+									  <option value="range">-- Select the rating range below --</option>
+									  <option value="saab">-- Select the rating range below --</option>
+									</select>
+								</div>
+								<div class="col-md-12 form-it">
+									<label>Release Year</label>
+									<div class="row">
+										<div class="col-md-6">
+											<select>
+											  <option value="range">From</option>
+											  <option value="number">10</option>
+											</select>
+										</div>
+										<div class="col-md-6">
+											<select>
+											  <option value="range">To</option>
+											  <option value="number">20</option>
+											</select>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-12 ">
+									<input class="submit" type="submit" value="submit">
+								</div>
+							</div>
+						</form>
+					</div>
+					<!-- end of Search Bar-2 list part in side bar -->	
+
+					<!-- Featured Celebrities list part in side bar -->	
+					<div class="celebrities">
+						<h4 class="sb-title">featured celebrity</h4>
+						<div class="celeb-item">
+							<a href="#"><img src="{% static 'images/uploads/ava1.jpg' %}" alt=""></a>
+							<div class="celeb-author">
+								<h6><a href="#">Samuel N. Jack</a></h6>
+								<span>Actor</span>
+							</div>
+						</div>
+						<div class="celeb-item">
+							<a href="#"><img src="{% static 'images/uploads/ava2.jpg' %}" alt=""></a>
+							<div class="celeb-author">
+								<h6><a href="#">Benjamin Carroll</a></h6>
+								<span>Actor</span>
+							</div>
+						</div>
+						<div class="celeb-item">
+							<a href="#"><img src="{% static 'images/uploads/ava3.jpg' %}" alt=""></a>
+							<div class="celeb-author">
+								<h6><a href="#">Beverly Griffin</a></h6>
+								<span>Actor</span>
+							</div>
+						</div>
+						<div class="celeb-item">
+							<a href="#"><img src="{% static 'images/uploads/ava4.jpg' %}" alt=""></a>
+							<div class="celeb-author">
+								<h6><a href="#">Justin Weaver</a></h6>
+								<span>Actor</span>
+							</div>
+						</div>
+					</div>
+					<!-- end of Featured Celebrities list part -->	
+
+				</div>
+			</div>
+			<!-- end of Side bar -->
+			
+		</div>
+	</div>
+</div>
+{% endblock %}

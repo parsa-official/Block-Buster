@@ -1,0 +1,342 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="hero mv-single-hero">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<!-- <h1> movie listing - list</h1>
+				<ul class="breadcumb">
+					<li class="active"><a href="#">Home</a></li>
+					<li> <span class="ion-ios-arrow-right"></span> movie listing</li>
+				</ul> -->
+			</div>
+		</div>
+	</div>
+</div>
+<div class="page-single movie-single movie_single">
+	<div class="container">
+		<div class="row ipad-width2">
+			<div class="col-md-4 col-sm-12 col-xs-12">
+				<div class="movie-img sticky-sb">
+					<img src="{{ movie.image.url }}" alt="">
+					<div class="movie-btn">	
+						<div class="btn-transform transform-vertical red">
+							<div><a href="https://www.youtube.com/embed/{{ movie.youtube_trailer_code }}" class="item item-1 redbtn"> <i class="ion-play"></i> Watch Trailer</a></div>
+							<div><a href="https://www.youtube.com/embed/{{ movie.youtube_trailer_code }}" class="item item-2 redbtn fancybox-media hvr-grow"><i class="ion-play"></i></a></div>
+						</div>
+						<div class="btn-transform transform-vertical">
+							<div><a href="#" class="item item-1 yellowbtn"> <i class="ion-card"></i> Download </a></div>
+							<div><a href="#" class="item item-2 yellowbtn"><i class="ion-card"></i></a></div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-8 col-sm-12 col-xs-12">
+				<div class="movie-single-ct main-content">
+					<h1 class="bd-hd">{{ movie.title }} <span>{{ movie.release_year  }}</span></h1>
+                    <div class="social-btn">
+                        {% if request.user.is_authenticated %}
+                            {% if is_favorite %}
+                                <a href="{% url 'account:favorite_movies' %}" class="parent-btn"><i class="ion-heart"></i> In your Favorites</a>
+                            {% else %}
+                                <a href="{% url 'cinema:favorite-movie-create' %}?movie_id={{ movie.id }}" class="parent-btn">
+                                    <i class="ion-heart"></i> Add to Favorite
+                                </a>
+                            {% endif %}
+                        {% endif %}  
+                        <div class="hover-bnt">
+							<a href="#" class="parent-btn"><i class="ion-android-share-alt"></i>share</a>
+							<div class="hvr-item">
+								<a href="#" class="hvr-grow"><i class="ion-social-facebook"></i></a>
+								<a href="#" class="hvr-grow"><i class="ion-social-twitter"></i></a>
+								<a href="#" class="hvr-grow"><i class="ion-social-googleplus"></i></a>
+								<a href="#" class="hvr-grow"><i class="ion-social-youtube"></i></a>
+							</div>
+						</div>  
+                    </div>
+                    
+                    
+                   					
+					<div class="movie-rate">
+						<div class="rate">
+							<i class="ion-android-star"></i>
+							<p><span>{{ movie.rating }}</span> <a href="https://www.imdb.com/title/tt{{ movie.imdb_id }}">IMDB</a></p>
+						</div>
+					</div>
+					<div class="movie-tabs">
+						<div class="tabs">
+							<ul class="tab-links tabs-mv">
+								<li class="active"><a href="#overview">Overview</a></li>
+								<li><a href="#cast" >  Cast & Crew </a></li>
+								<li><a href="#reviews"> Reviews</a></li>
+							</ul>
+						    <div class="tab-content">
+						        <div id="overview" class="tab active">
+						            <div class="row">
+						            	<div class="col-md-8 col-sm-12 col-xs-12">
+											<p>{{ movie.synopsis }}</p>
+											<div class="title-hd-sm">
+												<h4>cast</h4>
+												<a href="#cast" class="time">Full Cast & Crew  <i  class="ion-ios-arrow-right"></i></a>
+											</div>
+											<!-- movie cast -->
+                                            <div class="mvcast-item">
+                                                {% for cast_obj in cast|slice:":5" %}
+                                                  <div class="cast-it">
+                                                    <div class="cast-left">
+                                                      <div class="circle-image">
+                                                        {% if cast_obj.person.photo %}
+                                                            <div class="circle-image" style="background-image: url('{{ cast_obj.person.photo.url }}')"></div>
+                                                        {% else %}
+                                                          <img src="{% static 'images/uploads/user-img.png' %}" alt="" class="circle-image-img">
+                                                        {% endif %}
+                                                      </div>
+                                                      <div class="cast-info">
+                                                        <a href="{{ cast_obj.person.get_absolute_url }}">{{ cast_obj.person.name }}</a>
+                                                      </div>
+                                                    </div>
+                                                    <p style="text-align:end;">{{ cast_obj.character_name }}</p>
+                                                  </div>
+                                                {% endfor %}
+                                            </div> 
+                                            <br>
+                                            {% if user.is_authenticated %}
+                                            <div class="title-hd-sm">
+                                                <h4>about > {{ movie.title}} ({{movie.release_year}}) </h4>
+                                                <a href="#reviews" class="time">See All {{ comment_count }} Reviews <i class="ion-ios-arrow-right"></i></a>
+                                            </div>
+                                            
+                                            <!-- movie user review -->
+                                            <div id="comment-form" class="form-style-1">
+                                                <form method="post" class="user" action="{% url 'cinema:movie_detail' pk=movie.pk slug=movie.slug %}">
+                                                    {% csrf_token %}
+                                                    <div style="height: 250px;">
+                                                        <textarea name="body" id="comment" placeholder="Write Comment" class="form-style-1" style="height: 230px;background-color: #233a50; color: #ffffff; border: 3px solid #0f2133;  border-radius: 3px;"></textarea>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-9"></div> <!-- empty column to push the submit button to the right -->
+                                                        <div class="col-md-3">
+                                                            <input class="submit" type="submit" value="Submit">
+                                                        </div>
+                                                    </div>
+                                                </form>                                                
+                                            </div>
+                                            {% endif %}                                            
+						            	</div>
+						            	<div class="col-md-4 col-xs-12 col-sm-12">
+						            		<div class="sb-it">
+						            			<h6>Director: </h6>
+												<p>
+													{% for director in movie.directors.all|slice:":2" %}
+													{% if forloop.first %}
+														<a href="{{ director.get_absolute_url }}">{{ director.name }}</a>
+													{% else %}
+														, <a href="{{ director.get_absolute_url }}">{{ director.name }}</a>
+													{% endif %}
+													{% endfor %}
+												</p>
+						            		</div>
+						            		<div class="sb-it">
+						            			<h6>Writer: </h6>
+												<p>
+													{% for writer in movie.writers.all|slice:":2" %}
+													{% if forloop.first %}
+														<a href="{{ writer.get_absolute_url }}">{{ writer.name }}</a>
+													{% else %}
+														, <a href="{{ writer.get_absolute_url }}">{{ writer.name }}</a>
+													{% endif %}
+													{% endfor %}
+												</p>
+						            		</div>
+						            		<div class="sb-it">
+						            			<h6>Stars: </h6>
+												<p>
+													{% for cast_obj in cast|slice:":3" %}
+													{% if forloop.first %}
+														<a href="{{ cast_obj.person.get_absolute_url }}">{{ cast_obj.person.name }}</a>
+													{% else %}
+														, <a href="{{ cast_obj.person.get_absolute_url }}">{{ cast_obj.person.name }}</a>
+													{% endif %}
+													{% endfor %}
+												</p>
+						            		</div>
+											<div class="sb-it">
+												<h6>Genres:</h6>
+												<p>
+													{% for genre in genres %}
+													{% if forloop.first %}
+														<a href="#">{{ genre.name }}</a>
+													{% else %}
+														, <a href="#">{{ genre.name }}</a>
+													{% endif %}
+													{% endfor %}
+												</p>
+											</div>
+						            		<div class="sb-it">
+						            			<h6>Release Year:</h6>
+						            			<p>{{ movie.release_year }}</p>
+						            		</div>
+						            		<div class="sb-it">
+						            			<h6>Run Time:</h6>
+						            			<p>{{ movie.runtime }} min</p>
+						            		</div>
+                                            <div class="sb-it">
+						            			<h6>Country:</h6>
+                                                <p>
+                                                    {% for country in countries %}
+                                                        {% if forloop.first %}
+                                                            <a href="#">{{ country }}</a>
+                                                        {% else %}
+                                                            , <a href="#">{{ country }}</a>
+                                                        {% endif %}
+                                                    {% endfor %}  
+                                                </p>  
+						            		</div>
+                                            <div class="sb-it">
+						            			<h6>MMPA Rating:</h6>
+						            			<p>{{ movie.mpaa_rating }}</p>
+						            		</div>
+						            		<div class="sb-it">
+						            			<h6>Plot Keywords:</h6>
+						            			<p class="tags">
+													{% for plotkey in plotkeys %}
+						            				<span class="time"><a href="#">{{ plotkey }}</a></span>
+													{% endfor %}
+						            			</p>
+						            		</div>
+						            	</div>
+						            </div>
+						        </div>
+						        <div id="reviews" class="tab review">
+						           <div class="row">
+						            	<div class="rv-hd">
+						            		<div class="div">
+							            		<h3>Reviews and Comments:</h3>
+						       	 				<h2>{{ movie.title }} </h2>
+							            	</div>
+							            	<a href="#" class="redbtn">Write Comment</a>
+						            	</div>
+						            	<div class="topbar-filter">
+											<p>Found <span>{{comment_count}} reviews</span> in total</p>
+										</div>
+                                        {% for comment in comments %}
+    										<div class="mv-user-review-item">
+    											<div class="user-infor">
+                                                    {% if comment.user.profile.profile_picture %}
+    												    <img src="{{ comment.user.profile.profile_picture.url }}" alt="">
+                                                    {% else%}
+                                                        <img src="{% static 'images/uploads/unknown-user-photo.png' %}" alt="">
+                                                    {% endif %}
+                                                    <div>    													
+                                                        <p class="time">
+                                                            {% if comment.created|timesince <= '1 minute' %}
+                                                                just now by <a href="#"> {{ comment.user }}</a>
+                                                            {% else %}
+                                                                {{ comment.created|timesince }} ago by <a href="#"> {{ comment.user }}</a>
+                                                            {% endif %}
+                                                        </p>
+                                                        <p>{{ comment.body }}</p>
+                                                    </div>
+    											</div>
+    											
+    										</div>
+                                        {% empty %}
+                                            <p>No comments yet!</p>
+                                        {% endfor %}
+                                        <ul class="pagination">
+                                            {% if comments.has_previous %}
+                                                <a href="?page=1">&laquo; first &nbsp; </a>
+                                                <li class="icon-prev"><a href="?page={{ comments.previous_page_number }}"><i class="ion-ios-arrow-left"></i></a></li>
+                                            {% else %}
+                                                <li class="icon-prev disabled"><span><i class="ion-ios-arrow-left"></i></span></li>
+                                            {% endif %}
+                                        
+                                            {% for page_num in comments.paginator.page_range %}
+                                                {% if comments.number == page_num %}
+                                                    <li class="active"><a>{{ page_num }} <span class="sr-only">(current)</span></a></li>
+                                                {% elif page_num > comments.number|add:-3 and page_num < comments.number|add:3 %}
+                                                    <li><a href="?page={{ page_num }}">{{ page_num }}</a></li>
+                                                {% endif %}
+                                            {% endfor %}
+                                        
+                                            {% if comments.has_next %}
+                                                <li class="icon-next"><a href="?page={{ comments.next_page_number }}"><i class="ion-ios-arrow-right"></i></a></li>
+                                                <a href="?page={{ comments.paginator.num_pages }}">last &raquo;</a>
+                                            {% else %}
+                                                <li class="icon-next disabled"><span><i class="ion-ios-arrow-right"></i></span></li>
+                                            {% endif %}
+                                        </ul>                                                                               
+						            </div>
+						        </div>
+								<div id="cast" class="tab">
+									<div class="row">
+										<h3>Cast & Crew of</h3>
+										<h2>{{ movie.title }}</h2>
+										<!-- //== -->
+										<div class="title-hd-sm">
+											<h4>Directors</h4>
+										</div>
+										<div class="mvcast-item">											
+											{% for director in directors %}											
+                                            <div class="cast-it">
+                                                <div class="cast-left">
+                                                    {% if director.photo %}
+                                                        <img src="{{ director.photo.url }}" alt="" width="50" height="50">
+                                                    {% else %}
+                                                        <img src="{% static 'images/uploads/user-img.png' %}" alt="" width="50" height="50">
+                                                    {% endif %}
+                                                        <a href="{{ director.get_absolute_url }}"> {{ director.name }} </a>
+                                                </div>
+                                            </div>
+											{% endfor %}
+										</div>
+										<!-- //== -->
+										<div class="title-hd-sm">
+											<h4>Writers</h4>
+										</div>
+										<div class="mvcast-item">											
+											{% for writer in writers %}											
+                                            <div class="cast-it">
+                                                <div class="cast-left">
+                                                    {% if writer.photo %}
+                                                        <img src="{{ writer.photo.url }}" alt="" width="50" height="50">
+                                                    {% else %}
+                                                        <img src="{% static 'images/uploads/user-img.png' %}" alt="" width="50" height="50">
+                                                    {% endif %}
+                                                        <a href="{{ writer.get_absolute_url }}"> {{ writer.name }} </a>
+                                                </div>
+                                            </div>
+											{% endfor %}
+										</div>
+										<div class="title-hd-sm">
+											<h4>Cast</h4>
+										</div>
+										<div class="mvcast-item">											
+											{% for cast_obj in cast %}		
+                                                <div class="cast-it">
+                                                    <div class="cast-left">
+                                                        {% if cast_obj.person.photo %}
+                                                            <img src="{{ cast_obj.person.photo.url }}" alt="" width="50" height="50">
+                                                        {% else %}
+                                                            <img src="{% static 'images/uploads/user-img.png' %}" alt="" width="50" height="50">
+                                                        {% endif %}
+                                                            <a href="{{ cast_obj.person.get_absolute_url }}"> {{ cast_obj.person.name }} </a>
+                                                    </div>
+                                                    <p style="text-align:justify;">{{ cast_obj.character_name }}</p>
+                                                </div>
+											{% endfor %}
+										</div>					
+									</div>
+								</div>
+						    </div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- moviesingle11:03-->
+{% endblock %}

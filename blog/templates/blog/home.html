@@ -1,0 +1,156 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+
+<!-- Movies Slide Show list part -->
+<div class="slider movie-items">
+	<div class="container">
+		<div class="row">
+			<div class="social-link">
+				<p>Follow us: </p>
+				<a href="#"><i class="ion-social-facebook"></i></a>
+				<a href="#"><i class="ion-social-twitter"></i></a>
+				<a href="#"><i class="ion-social-googleplus"></i></a>
+				<a href="#"><i class="ion-social-youtube"></i></a>
+			</div>
+			<div  class="slick-multiItemSlider">
+				{% for movie in movies %}
+				  {% if movie.is_on_slideshow == True %}
+					<div class="movie-item">
+					  	<a href="{{ movie.get_absolute_url }}">
+							<div class="mv-img">
+							<img src="{{ movie.image.url }}" alt="" width="285" height="437">
+							</div>
+						</a>
+						<div class="title-in">
+							<div class="cate">
+								{% for genre in movie.genres.all|slice:":3" %}
+								<span class="blue"><a href="#">{{ genre }}</a></span>
+								{% endfor %}
+							</div>
+							<h6><a href="{{ movie.get_absolute_url }}">{{ movie.title }}</a></h6>
+							<p><i class="ion-android-star"></i><span>&nbsp;{{ movie.rating }}</span> /10</p>
+						</div>
+					</div>
+				  {% endif %}
+				{% endfor %}
+			</div>
+	    </div>
+	</div>
+</div>
+<!-- end of Movies Slide Show list part -->
+<!-- Movies list part -->
+<div class="movie-items  full-width">
+	<div class="row">
+		<div class="col-md-12">
+			<div class="title-hd">
+				
+				<h2>in theater</h2>
+				<a href="{% url 'cinema:movies_list' %}" class="viewall">View all <i class="ion-ios-arrow-right"></i></a>
+			</div>
+			<div class="tabs">
+				<ul class="tab-links">
+					<li class="active"><a href="#tab1-h2">#Popular</a></li>
+					<li><a href="#tab2-h2"> #Coming soon</a></li>
+					<li><a href="#tab3-h2">  #Top rated  </a></li>
+					<li><a href="#tab4-h2"> #Most reviewed</a></li>                        
+				</ul>
+				<br>
+			    <div class="tab-content">
+			        <div id="tab1-h2" class="tab active">
+			            <div class="row">
+			            	<div class="slick-multiItem2">
+								{% for movie in movies %}
+									<div class="slide-it">
+										<div class="movie-item">
+											<div class="mv-img">
+												<img src="{{ movie.image.url }}" alt="">
+											</div>
+											<div class="hvr-inner">
+												<a  href="{{ movie.get_absolute_url }}"> Read more <i class="ion-android-arrow-dropright"></i> </a>
+											</div>
+											<div class="title-in">
+												<h6><a href="#">{{ movie.title }}</a></h6>
+												<p><i class="ion-android-star"></i><span> &nbsp;{{ movie.rating }}</span> /10</p>
+											</div>
+										</div>
+									</div>
+								{% endfor %}
+			            	</div>
+			            </div>
+			        </div>
+			    </div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- end of Movies list part -->
+<!-- Begin Trailer part -->
+<div class="trailers full-width">
+	<div class="row ipad-width">
+		<div class="col-md-9 col-sm-12 col-xs-12">
+			<div class="title-hd">
+				<h2>in theater</h2>
+				<a href="#" class="viewall">View all <i class="ion-ios-arrow-right"></i></a>
+			</div>
+			<div class="videos">
+			 	<div class="slider-for-2 video-ft">
+				{% for trailer in trailers %}
+				   <div>
+				    	<iframe class="item-video" src="#" data-src="https://www.youtube.com/embed/{{ trailer.youtube_code }}"></iframe>
+				    </div>
+				{% endfor %}
+				</div>
+				<div class="slider-nav-2 thumb-ft">
+				{% for trailer in trailers %}
+					<div class="item">
+						<div class="trailer-img">
+							<img src="https://img.youtube.com/vi/{{trailer.youtube_code }}/maxresdefault.jpg"  alt="{{ trailer.title }}" width="4096" height="2737">
+						</div>
+						<div class="trailer-infor">
+                        	<h4 class="desc">{{ trailer.title }}</h4>
+                        	<p>2:30</p>
+                        </div>
+					</div>
+				{% endfor %}
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- end of Trailer part -->
+<!-- latest new v2 section-->
+<div class="latestnew full-width">
+		<div class="row">
+			<div class="col-md-9">
+				<div class="title-hd">
+					<h2>Latest news</h2>
+					<a href="{% url 'blog:blog_list' %}" class="viewall">see all news <i class="ion-ios-arrow-right"></i></a>
+				</div>
+				<div class="latestnewv2">
+					{% for blog in blogs %}
+					<div class="blog-item-style-2">
+						<a href="{{ blog.get_absolute_url }}"><img src="{{ blog.image.url }}" alt=""></a>
+						<div class="blog-it-infor">
+							<h3><a href="{{ blog.get_absolute_url }}">{{ blog.title }}</a></h3>
+							<span class="time">{{ blog.pub_date }}</span>
+							<p>{{ blog.content|safe|truncatechars_html:150 }}</p>
+						</div>
+					</div>
+					{% endfor %}
+				</div>
+			</div>
+			<div class="col-md-3">
+				<div class="sidebar">
+					
+				</div>
+			</div>
+		</div>
+	
+</div>
+<!--end of latest new v2 section-->
+
+{% endblock %}

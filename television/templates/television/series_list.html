@@ -1,0 +1,205 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="hero sr-single-hero sr-single">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="hero-ct">
+					<h1> serie listing - list</h1>
+					<ul class="breadcumb">
+						<li class="active"><a href="#">Home</a></li>
+						<li> <span class="ion-ios-arrow-right"></span> serie listing</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="page-single movie_list">
+	<div class="container">
+		<div class="row ipad-width2">
+			<div class="col-md-8 col-sm-12 col-xs-12">
+				<div class="topbar-filter">
+					<p>Found <span>{{ series_count }} movies</span> in total</p>
+					<label>Sort by:</label>
+					<select>
+						<option value="popularity">Popularity Descending</option>
+						<option value="popularity">Popularity Ascending</option>
+						<option value="rating">Rating Descending</option>
+						<option value="rating">Rating Ascending</option>
+						<option value="date">Release date Descending</option>
+						<option value="date">Release date Ascending</option>
+					</select>
+					<a href="{% url 'television:series_list' %}" class="list"><i class="ion-ios-list-outline active"></i></a>
+					<a href="{% url 'television:series_grid' %}" class="grid"><i class="ion-grid"></i></a>
+				</div>
+			<!-- Displaying a list of TVShows with their details and cast members-->	
+			{% for serie in series %}
+				<div class="movie-item-style-2">
+					<img src="{{ serie.image.url }}" alt="{{ serie.title }}">
+					<div class="mv-item-infor">
+						<h6><a href="{{ serie.get_absolute_url }}">{{ serie.title }}</a></h6>
+						<p class="rate">
+							<i class="ion-android-star"></i>
+							<span>{{ serie.rating }}</span>/10
+						</p>
+						<p class="describe">{{ serie.synopsis|truncatechars_html:320 }}</p>
+						<p class="run-time">
+							Run Time: {{ serie.runtime }} min.
+							<span>MMPA: {{ serie.mpaa_rating }}</span>
+							<span>Release: {{ serie.release_year }}</span>
+						</p>
+
+                            <p>Network: <a href="#">{{ serie.network }}</a></p>
+			
+						<p>Stars:
+							{% for cast_obj in serie.casts.all|slice:":3" %}
+								{% if forloop.first %}
+									<a href="{{ cast_obj.person.get_absolute_url }}">{{ cast_obj.person.name }}</a>
+								{% else %}
+									, <a href="{{ cast_obj.person.get_absolute_url }}">{{ cast_obj.person.name }}</a>
+								{% endif %}
+							{% endfor %}
+						</p>
+			
+						<p>Status: <a href="#">{{ serie.status|capfirst }}</a></p>
+					</div>
+				</div>
+			{% endfor %}
+			<!-- End of Displaying a list of TVShows with their details and cast members-->
+			
+
+				<!-- pagination-->
+				<ul class="pagination">
+
+					{% if page_obj.has_previous %}
+						<a href="?page=1">&laquo; first &nbsp; </a>
+						<li class="icon-prev"><a href="?page={{ page_obj.previous_page_number }}"><i class="ion-ios-arrow-left"></i></a></li>
+					{% else %}
+						<li class="icon-prev disabled"><span><i class="ion-ios-arrow-left"></i></span></li>
+					{% endif %}
+				
+					{% for page_num in page_obj.paginator.page_range %}
+						{% if page_obj.number == page_num %}
+							<li class="active"><a>{{ page_num }} <span class="sr-only">(current)</span></a></li>
+						{% elif page_num > page_obj.number|add:-3 and page_num < page_obj.number|add:3 %}
+							<li><a href="?page={{ page_num }}">{{ page_num }}</a></li>
+						{% endif %}
+					{% endfor %}
+				
+				
+					{% if page_obj.has_next %}
+						<li class="icon-next"><a href="?page={{ page_obj.next_page_number }}"><i class="ion-ios-arrow-right"></i></a></li>
+						<a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+					{% else %}
+						<li class="icon-next disabled"><span><i class="ion-ios-arrow-right"></i></span></li>
+
+					{% endif %}
+				</ul>
+				<!-- end of pagination-->
+				
+			</div>
+			<div class="col-md-4 col-sm-12 col-xs-12">
+				<div class="sidebar">
+					<div class="searh-form">
+						<h4 class="sb-title">Search for TV-Show and Series</h4>
+						<form class="form-style-1" action="#">
+							<div class="row">
+								<div class="col-md-12 form-it">
+									<label>TV-Show or Serie name</label>
+									<input type="text" placeholder="Enter keywords">
+								</div>
+								<div class="col-md-12 form-it">
+									<label>Genres & Subgenres</label>
+									<div class="group-ip">
+										<select
+											name="skills" multiple="" class="ui fluid dropdown">
+											<option value="">Enter to filter genres</option>
+											<option value="Action1">Action 1</option>
+					                        <option value="Action2">Action 2</option>
+					                        <option value="Action3">Action 3</option>
+					                        <option value="Action4">Action 4</option>
+					                        <option value="Action5">Action 5</option>
+										</select>
+									</div>
+									
+								</div>
+								<div class="col-md-12 form-it">
+									<label>Rating Range</label>
+									
+									 <select>
+										<option value="range">-- Select the rating range below --</option>
+										<option value="saab">-- Select the rating range below --</option>
+										<option value="saab">-- Select the rating range below --</option>
+										<option value="saab">-- Select the rating range below --</option>
+									</select>
+									
+								</div>
+								<div class="col-md-12 form-it">
+									<label>Release Year</label>
+									<div class="row">
+										<div class="col-md-6">
+											<select>
+												<option value="range">From</option>
+												<option value="number">10</option>
+												<option value="number">20</option>
+												<option value="number">30</option>
+											</select>
+										</div>
+										<div class="col-md-6">
+											<select>
+												<option value="range">To</option>
+												<option value="number">20</option>
+												<option value="number">30</option>
+												<option value="number">40</option>
+											</select>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-12 ">
+									<input class="submit" type="submit" value="submit">
+								</div>
+							</div>
+						</form>
+					</div>
+					<div class="celebrities">
+						<h4 class="sb-title">featured celebrity</h4>
+						<div class="celeb-item">
+							<a href="#"><img src="{% static 'images/uploads/ava1.jpg' %}" alt=""></a>
+							<div class="celeb-author">
+								<h6><a href="#">Samuel N. Jack</a></h6>
+								<span>Actor</span>
+							</div>
+						</div>
+						<div class="celeb-item">
+							<a href="#"><img src="{% static 'images/uploads/ava2.jpg' %}" alt=""></a>
+							<div class="celeb-author">
+								<h6><a href="#">Benjamin Carroll</a></h6>
+								<span>Actor</span>
+							</div>
+						</div>
+						<div class="celeb-item">
+							<a href="#"><img src="{% static 'images/uploads/ava3.jpg' %}" alt=""></a>
+							<div class="celeb-author">
+								<h6><a href="#">Beverly Griffin</a></h6>
+								<span>Actor</span>
+							</div>
+						</div>
+						<div class="celeb-item">
+							<a href="#"><img src="{% static 'images/uploads/ava4.jpg' %}" alt=""></a>
+							<div class="celeb-author">
+								<h6><a href="#">Justin Weaver</a></h6>
+								<span>Actor</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+{% endblock %}

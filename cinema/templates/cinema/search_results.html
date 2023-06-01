@@ -1,0 +1,263 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+{% if searched %}
+<!-- List Page Header -->
+<div class="hero common-hero">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="hero-ct">
+					<h1> You Searched for {{searched}} </h1>
+					<ul class="breadcumb">
+						<li class="active"><a href="#">Home</a></li>
+						<li> <span class="ion-ios-arrow-right"></span> movie listing</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- END of List Page Header -->
+
+<div class="page-single movie_list">
+	<div class="container">
+		<div class="row ipad-width2">
+			<div class="col-md-8 col-sm-12 col-xs-12">
+				<!-- <div class="topbar-filter">
+					<p>Found <span>1,608 movies</span> in total</p>
+					<label>Sort by:</label>
+					<select>
+						<option value="popularity">Popularity Descending</option>
+						<option value="popularity">Popularity Ascending</option>
+						<option value="rating">Rating Descending</option>
+						<option value="rating">Rating Ascending</option>
+						<option value="date">Release date Descending</option>
+						<option value="date">Release date Ascending</option>
+					</select>
+					<a href="{% url 'cinema:movies_list' %}" class="list"><i class="ion-ios-list-outline active"></i></a>
+					<a href="{% url 'cinema:movies_grid' %}" class="grid"><i class="ion-grid"></i></a>
+				</div> -->
+
+			<!-- Displaying a list of movies with their details and cast members-->
+				{% if movies or series %}
+					<h5 style="color:rgb(220, 226, 131)">Movies and TVShows result for "{{searched}}":</h5>
+					<br>
+						{% for movie in movies %}
+						<div class="movie-item-style-2">
+							<img src="{{ movie.image.url }}">
+					
+							<div class="mv-item-infor">
+								<h6>
+									<a href="{{ movie.get_absolute_url }}">
+										{{ movie.title }}
+										<span>&nbsp;{{ movie.release_date|date:"Y" }}</span>
+									</a>
+								</h6>
+					
+								<p class="rate">
+									<i class="ion-android-star"></i>
+									<span>{{ movie.rating }}</span> /10
+								</p>
+					
+								<p class="describe">
+									{{ movie.synopsis|truncatechars_html:249}}
+								</p>
+					
+								<p class="run-time">
+									Run Time: {{ movie.runtime }} min.
+									<span>MMPA: {{ movie.mpaa_rating }}</span>
+									<span>Release: {{ movie.release_date }}</span>
+								</p>
+					
+								<p> Director:
+									{% for director in movie.directors.all %}
+										{% if forloop.first %}
+											<a href="{{ director.get_absolute_url }}">
+												{{ director.name }}
+											</a>
+										{% else %}
+											, <a href="{{ director.get_absolute_url }}">
+												{{ director.name }}
+											</a>
+										{% endif %}
+									{% endfor %}
+								</p>
+					
+								<p> Stars:
+									{% for cast_obj in movie.casts.all|slice:":3" %}
+										{% if forloop.first %}
+											<a href="{{ cast_obj.person.get_absolute_url }}">
+												{{ cast_obj.person.name }}
+											</a>
+										{% else %}
+											, <a href="{{ cast_obj.person.get_absolute_url }}">
+												{{ cast_obj.person.name }}
+											</a>
+										{% endif %}
+									{% endfor %}
+								</p>
+							</div>
+						</div>
+						{% endfor %}	
+			<!-- End of Displaying a list of Movies with their details and cast members-->		
+			<!-- Displaying a list of TVShows with their details and cast members-->	
+						{% for serie in series %}
+						<div class="movie-item-style-2">
+							<img src="{{ serie.image.url }}" alt="{{ serie.title }}">
+							<div class="mv-item-infor">
+								<h6><a href="{{ serie.get_absolute_url }}">{{ serie.title }}</a></h6>
+								<p class="rate">
+									<i class="ion-android-star"></i>
+									<span>{{ serie.rating }}</span>/10
+								</p>
+								<p class="describe">{{ serie.synopsis|truncatechars_html:320 }}</p>
+								<p class="run-time">
+									Run Time: {{ serie.runtime }} min.
+									<span>MMPA: {{ serie.mpaa_rating }}</span>
+									<span>Release: {{ serie.release_date }}</span>
+								</p>
+					
+								<p>Director:
+									{% for director in serie.directors.all %}
+										{% if forloop.first %}
+											<a href="{{ director.get_absolute_url }}">{{ director.name }}</a>
+										{% else %}
+											, <a href="{{ director.get_absolute_url }}">{{ director.name }}</a>
+										{% endif %}
+									{% endfor %}
+								</p>
+					
+								<p>Stars:
+									{% for cast_obj in serie.casts.all|slice:":3" %}
+										{% if forloop.first %}
+											<a href="{{ cast_obj.person.get_absolute_url }}">{{ cast_obj.person.name }}</a>
+										{% else %}
+											, <a href="{{ cast_obj.person.get_absolute_url }}">{{ cast_obj.person.name }}</a>
+										{% endif %}
+									{% endfor %}
+								</p>
+					
+								<p>Status: <a href="#">{{ serie.status|capfirst }}</a></p>
+							</div>
+						</div>
+					{% endfor %}
+				{% else %}
+				<h5 style="color:rgb(185, 88, 88)">There is no Movies or TVShows result for "{{searched}}"</h5>
+				<br>
+				{% endif %}	
+			<!-- End of Displaying a list of TVShows with their details and cast members-->
+			<!-- Displaying a list of CAST-->	
+				{% if celebs %}
+				<h5 style="color:rgb(220, 226, 131)">Celebs and People result for "{{searched}}":</h5>
+				<br>
+				<div class="mvcast-item">
+					{% for celeb in celebs %}
+					<div class="row">
+						<div class="col-md-12">
+							<div class="ceb-item-style-2">
+								<img src="{{ celeb.photo.url }}" alt="" width="100" height="100">
+								<div class="ceb-infor">
+									<h2><a href="{{ celeb.get_absolute_url }}">{{ celeb.name }}</a></h2>
+									<span>{{ celeb.job }}</span>
+									<p>{{ celeb.bio|truncatechars_html:320 }}. </p>
+								</div>
+							</div>
+						</div>
+					</div>
+					{% endfor %}
+				</div>
+				{% else %}
+				<h5 style="color:rgb(185, 88, 88)">There is no any Celebs or People result for "{{searched}}"</h5>
+				<br>
+				{% endif %}
+			<!-- End of Displaying a list of CAST-->			
+			</div>
+
+			<!-- Search form + Facebook + Twitter ads -->
+			<div class="col-md-4 col-sm-12 col-xs-12">
+				<div class="sidebar">
+					<div class="searh-form">
+						<h4 class="sb-title">Search for movie</h4>
+						<form class="form-style-1" action="#">
+							<div class="row">
+								<div class="col-md-12 form-it">
+									<label>Movie name</label>
+									<input type="text" placeholder="Enter keywords">
+								</div>
+								<div class="col-md-12 form-it">
+									<label>Genres & Subgenres</label>
+									<div class="group-ip">
+										<select
+											name="skills" multiple="" class="ui fluid dropdown">
+											<option value="">Enter to filter genres</option>
+											<option value="Action1">Action 1</option>
+					                        <option value="Action2">Action 2</option>
+					                        <option value="Action3">Action 3</option>
+					                        <option value="Action4">Action 4</option>
+					                        <option value="Action5">Action 5</option>
+										</select>
+									</div>
+									
+								</div>
+								<div class="col-md-12 form-it">
+									<label>Rating Range</label>
+									
+									 <select>
+										<option value="range">-- Select the rating range below --</option>
+										<option value="saab">-- Select the rating range below --</option>
+										<option value="saab">-- Select the rating range below --</option>
+										<option value="saab">-- Select the rating range below --</option>
+									</select>
+									
+								</div>
+								<div class="col-md-12 form-it">
+									<label>Release Year</label>
+									<div class="row">
+										<div class="col-md-6">
+											<select>
+												<option value="range">From</option>
+												<option value="number">10</option>
+												<option value="number">20</option>
+												<option value="number">30</option>
+											</select>
+										</div>
+										<div class="col-md-6">
+											<select>
+												<option value="range">To</option>
+												<option value="number">20</option>
+												<option value="number">30</option>
+												<option value="number">40</option>
+											</select>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-12 ">
+									<input class="submit" type="submit" value="submit">
+								</div>
+							</div>
+						</form>
+					</div>
+					<div class="sb-facebook sb-it">
+						<h4 class="sb-title">Find us on Facebook</h4>
+						<iframe src="#" data-src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2Ftemplatespoint.net%2F%3Ffref%3Dts&tabs=timeline&width=340&height=315px&small_header=true&adapt_container_width=false&hide_cover=false&show_facepile=true&appId"  height="315" style="width:100%;border:none;overflow:hidden" ></iframe>
+					</div>
+					<div class="sb-twitter sb-it">
+						<h4 class="sb-title">Tweet to us</h4>
+						<div class="slick-tw">
+							<div class="tweet item" id=""><!-- Put your twiter id here -->
+							</div>
+							<div class="tweet item" id=""><!-- Put your 2nd twiter account id here -->
+							</div>
+						</div>							
+					</div>
+				</div>
+			</div>
+			<!-- End of Search form + Facebook + Twitter ads -->
+		</div>
+	</div>
+</div>
+{% endif %}
+{% endblock %}

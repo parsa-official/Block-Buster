@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="hero user-hero">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="hero-ct">
+					<h1>{{ user.first_name }}&nbsp;{{ user.last_name }}'s profile</h1>
+					<ul class="breadcumb">
+						<li class="active"><a href="#">Account</a></li>
+						<li> <span class="ion-ios-arrow-right"></span>Avatar</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="page-single">
+	<div class="container">
+		<div class="row ipad-width">
+			<div class="col-md-3 col-sm-12 col-xs-12">
+				<div class="user-information">
+                    <div class="user-img">
+                        {% if user.profile.profile_picture %}
+                        <a href="{% url 'account:change_profile_picture' %}">
+                            <svg class="profile-picture" viewBox="0 0 100 100">
+                                <mask id="circle-mask">
+                                    <circle cx="50" cy="50" r="50" fill="white"/>
+                                </mask>
+                                <image xlink:href="{{ user.profile.profile_picture.url }}" x="0" y="0" width="100" height="100" mask="url(#circle-mask)"/>
+                            </svg>
+                        </a>
+                        <br>
+                        <br>
+                        <a href="{% url 'account:change_profile_picture' %}" class="redbtn">Change Avatar</a>
+                        {% else %}
+                            {% if user.profile.profile_picture is defined %}
+                                <a href="{% url 'account:change_profile_picture' %}"><img src="{{ user.profile.profile_picture.url }}" alt=""></a>
+                            {% else %}
+                                <a href="{% url 'account:change_profile_picture' %}"><img src="{% static 'images/uploads/user-img.png' %}" alt=""></a>
+                            {% endif %}
+                            <br>
+                            <a href="{% url 'account:change_profile_picture' %}" class="redbtn">Set an Avatar</a>
+                        {% endif %}
+                    </div>
+					<div class="user-fav">
+						<p>Account Details</p>
+						<ul>
+							<li><a href="{% url 'account:profile' %}">Profile</a></li>
+                            <li  class="active"><a href="{% url 'account:change_profile_picture' %}"">Avatar</a></li>
+							<li><a href="{% url 'account:favorite_movies' %}">Favorites</a></li>
+						</ul>
+					</div>
+					<div class="user-fav">
+						<p>Others</p>
+						<ul>
+							<li><a href="{% url 'account:change_password' %}">Change password</a></li>
+							<li><a href="{% url 'account:logout' %}">Logout</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+            <div class="col-md-9 col-sm-12 col-xs-12">
+                <div class="form-style-1 user-pro" action="#">
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <h4>Avatar:</h4>
+                        <div class="row">
+                            <div class="col-md-6 form-it">
+                                {% if user.profile.profile_picture %}
+                                <a href="{% url 'account:change_profile_picture' %}"><img src="{{ user.profile.profile_picture.url }}" alt=""></a>
+                                {% else %}
+                                    {% if user.profile.profile_picture is defined %}
+                                        <a href="{% url 'account:change_profile_picture' %}"><img src="{{ user.profile.profile_picture.url }}" alt=""></a>
+                                    {% else %}
+                                        <a href="{% url 'account:change_profile_picture' %}"><img src="{% static 'images/uploads/user-img.png' %}" alt=""></a>
+                                    {% endif %}
+
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 form-it">
+                                {{ form.as_p }}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2">
+                                <input class="submit" type="submit" value="Save">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+		</div>
+	</div>
+</div>
+
+{% endblock %}

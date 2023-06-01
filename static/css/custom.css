@@ -1,0 +1,52 @@
+.cast-left {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Adjust the spacing between the image and the cast name */
+  }
+  
+  .circle-image {
+    width: 70px; /* Set the desired width and height for the container */
+    height: 70px; /* Set the desired width and height for the container */
+    background-size: cover; /* Maintain aspect ratio and cover the container */
+    background-position: center; /* Center the background image */
+    border-radius: 50%;
+  }
+  
+  .cast-info {
+    flex-grow: 1; /* Allow the cast name to take up remaining space */
+  }
+  
+  .cast-left a {
+    white-space: nowrap; /* Prevent line breaks within the cast name */
+    overflow: hidden; /* Hide any overflowing text */
+    text-overflow: ellipsis; /* Show ellipsis (...) if the text overflows */
+  }
+  
+  .cast-left p {
+    white-space: normal; /* Allow the character name to wrap to multiple lines */
+  }
+  .ceb-infor {
+    margin-top: 10px; /* Adjust the spacing between the image and the celebrity information */
+  }
+  
+  .ceb-infor h2 a {
+    white-space: nowrap; /* Prevent line breaks within the celebrity name */
+    overflow: hidden; /* Hide any overflowing text */
+    text-overflow: ellipsis; /* Show ellipsis (...) if the text overflows */
+  }  
+
+  .form-style-1 .group-ip i.icon.delete:before {
+    content: "\f12a";
+    font-family: "Ionicons";
+  }
+  
+  .form-style-1 .group-ip .ui.label > .delete.icon {
+    font-size: 8px;
+  }
+  
+  .delete-link {
+    color: #ff0000; /* Choose the desired color for the delete link */
+    margin-top: 10px; /* Adjust the margin-top value as per your design */
+    display: block; /* or inline-block based on your layout requirements */
+  }
+  

@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="hero common-hero">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="hero-ct">
+					<h1> blog listing - list</h1>
+					<ul class="breadcumb">
+						<li class="active"><a href="#">Home</a></li>
+						<li> <span class="ion-ios-arrow-right"></span> blog listing</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- blog list section-->
+<div class="page-single">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-9 col-sm-12 col-xs-12">
+				{% for blog in blogs %}
+				<div class="blog-item-style-1 blog-item-style-3">
+            		<img src="{{ blog.image.url }}" alt="">
+            		<div class="blog-it-infor">
+            			<h3><a href="{{ blog.get_absolute_url }}">{{ blog.title }}</a></h3>
+            			<span class="time">{{ blog.pub_date }}</span>
+            			<p>{{ blog.content|safe|truncatechars_html:150 }}</p>
+            		</div>
+            	</div>
+				{% endfor %}
+
+			<!-- pagination-->
+			<ul class="pagination">
+
+				{% if page_obj.has_previous %}
+					<a href="?page=1">&laquo; first &nbsp; </a>
+					<li class="icon-prev"><a href="?page={{ page_obj.previous_page_number }}"><i class="ion-ios-arrow-left"></i></a></li>
+				{% else %}
+					<li class="icon-prev disabled"><span><i class="ion-ios-arrow-left"></i></span></li>
+				{% endif %}
+			
+				{% for page_num in page_obj.paginator.page_range %}
+					{% if page_obj.number == page_num %}
+						<li class="active"><a>{{ page_num }} <span class="sr-only">(current)</span></a></li>
+					{% elif page_num > page_obj.number|add:-3 and page_num < page_obj.number|add:3 %}
+						<li><a href="?page={{ page_num }}">{{ page_num }}</a></li>
+					{% endif %}
+				{% endfor %}
+			
+			
+				{% if page_obj.has_next %}
+					<li class="icon-next"><a href="?page={{ page_obj.next_page_number }}"><i class="ion-ios-arrow-right"></i></a></li>
+					<a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+				{% else %}
+					<li class="icon-next disabled"><span><i class="ion-ios-arrow-right"></i></span></li>
+
+				{% endif %}
+			</ul>
+			<!-- end of pagination-->
+				
+			</div>
+			<div class="col-md-3 col-sm-12 col-xs-12">
+				<div class="sidebar">
+					<div class="sb-cate sb-it">
+						<h4 class="sb-title">Categories</h4>
+						<ul>
+							<li><a href="#">Awards (50)</a></li>
+							<li><a href="#">Box office (38)</a></li>
+							<li><a href="#">Film reviews (72)</a></li>
+							<li><a href="#">News (45)</a></li>
+							<li><a href="#">Global (06)</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!--end of blog list section-->
+{% endblock %}

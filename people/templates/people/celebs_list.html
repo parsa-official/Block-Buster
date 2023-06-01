@@ -1,0 +1,169 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="hero hero3">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="hero-ct">
+					<h1>celebrity listing - list</h1>
+					<ul class="breadcumb">
+						<li class="active"><a href="#">Home</a></li>
+						<li> <span class="ion-ios-arrow-right"></span> celebrity listing</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- celebrity list section-->
+<div class="page-single">
+	<div class="container">
+		<div class="row ipad-width2">
+			<div class="col-md-9 col-sm-12 col-xs-12">
+				<div class="topbar-filter">
+					<p class="pad-change">Found <span>{{ celebs_count }} celebrities</span> in total</p>
+					<label>Sort by:</label>
+					<select>
+						<option value="popularity">Popularity Descending</option>
+						<option value="popularity">Popularity Ascending</option>
+						<option value="rating">Rating Descending</option>
+						<option value="rating">Rating Ascending</option>
+						<option value="date">Release date Descending</option>
+						<option value="date">Release date Ascending</option>
+					</select>
+					<a href="{% url 'people:celeb_list' %}" class="list"><i class="ion-ios-list-outline active"></i></a>
+					<a  href="{% url 'people:celeb_grid' %}" class="grid"><i class="ion-grid "></i></a>
+				</div>
+				<!-- Displaying a list of CAST-->	
+				{% for celeb in celebs %}
+				<div class="row">
+					<div class="col-md-12">
+						<div class="ceb-item-style-2">
+                            {% if celeb.photo %}
+                                <img src="{{ celeb.photo.url }}" alt="" width="70" height="70">
+                            {% else %}
+                                <img src="{% static 'images/uploads/user-img.png' %}" alt="" width="70" height="70">
+                            {% endif %}
+							<div class="ceb-infor">
+								<h2><a href="{{ celeb.get_absolute_url }}">{{ celeb.name }}</a></h2>
+								<span>{{ celeb.job }}</span>
+								<p>{{ celeb.bio|truncatechars_html:320 }}. </p>
+							</div>
+						</div>
+					</div>
+				</div>
+				{% endfor %}
+				<!-- End of Displaying a list of CAST-->
+				<ul class="pagination">
+					{% if page_obj.has_previous %}
+						<a href="?page=1">&laquo; first &nbsp; </a>
+						<li class="icon-prev"><a href="?page={{ page_obj.previous_page_number }}"><i class="ion-ios-arrow-left"></i></a></li>
+					{% else %}
+						<li class="icon-prev disabled"><span><i class="ion-ios-arrow-left"></i></span></li>
+					{% endif %}
+				
+					{% for page_num in page_obj.paginator.page_range %}
+						{% if page_obj.number == page_num %}
+							<li class="active"><a>{{ page_num }} <span class="sr-only">(current)</span></a></li>
+						{% elif page_num > page_obj.number|add:-3 and page_num < page_obj.number|add:3 %}
+							<li><a href="?page={{ page_num }}">{{ page_num }}</a></li>
+						{% endif %}
+					{% endfor %}
+				
+				
+					{% if page_obj.has_next %}
+						<li class="icon-next"><a href="?page={{ page_obj.next_page_number }}"><i class="ion-ios-arrow-right"></i></a></li>
+						<a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+					{% else %}
+						<li class="icon-next disabled"><span><i class="ion-ios-arrow-right"></i></span></li>
+					{% endif %}
+				</ul>
+			</div>
+			<div class="col-md-3 col-xs-12 col-sm-12">
+				<div class="sidebar">
+						<div class="searh-form">
+						<h4 class="sb-title">Search celebrity</h4>
+						<form class="form-style-1 celebrity-form" action="#">
+							<div class="row">
+								<div class="col-md-12 form-it">
+									<label>Celebrity name</label>
+									<input type="text" placeholder="Enter keywords">
+								</div>
+								<div class="col-md-12 form-it">
+									<label>Celebrity Letter</label>
+									<select>
+									  <option value="range">A</option>
+									  <option value="saab">B</option>
+									</select>
+								</div>
+								<div class="col-md-12 form-it">
+									<label>Category</label>
+									<select>
+									  <option value="range">Actress</option>
+									  <option value="saab">Others</option>
+									</select>
+								</div>
+								<div class="col-md-12 form-it">
+									<label>Year of birth</label>
+									<div class="row">
+										<div class="col-md-6">
+											<select>
+											  <option value="range">1970</option>
+											  <option value="number">Other</option>
+											</select>
+										</div>
+										<div class="col-md-6">
+											<select>
+											  <option value="range">1990</option>
+											  <option value="number">others</option>
+											</select>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-12 ">
+									<input class="submit" type="submit" value="submit">
+								</div>
+							</div>
+						</form>
+					</div>
+					<div class="celebrities">
+						<h4 class="sb-title">featured celebrity</h4>
+						<div class="celeb-item">
+							<a href="#"><img src="{% static 'images/uploads/ava1.jpg' %}" alt=""></a>
+							<div class="celeb-author">
+								<h6><a href="#">Samuel N. Jack</a></h6>
+								<span>Actor</span>
+							</div>
+						</div>
+						<div class="celeb-item">
+							<a href="#"><img src="{% static 'images/uploads/ava2.jpg' %}" alt=""></a>
+							<div class="celeb-author">
+								<h6><a href="#">Benjamin Carroll</a></h6>
+								<span>Actor</span>
+							</div>
+						</div>
+						<div class="celeb-item">
+							<a href="#"><img src="{% static 'images/uploads/ava3.jpg' %}" alt=""></a>
+							<div class="celeb-author">
+								<h6><a href="#">Beverly Griffin</a></h6>
+								<span>Actor</span>
+							</div>
+						</div>
+						<div class="celeb-item">
+							<a href="#"><img src="{% static 'images/uploads/ava4.jpg' %}" alt=""></a>
+							<div class="celeb-author">
+								<h6><a href="#">Justin Weaver</a></h6>
+								<span>Actor</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- end of celebrity list section-->
+{% endblock %}
