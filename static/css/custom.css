@@ -34,19 +34,3 @@
     overflow: hidden; /* Hide any overflowing text */
     text-overflow: ellipsis; /* Show ellipsis (...) if the text overflows */
   }  
-
-  .form-style-1 .group-ip i.icon.delete:before {
-    content: "\f12a";
-    font-family: "Ionicons";
-  }
-  
-  .form-style-1 .group-ip .ui.label > .delete.icon {
-    font-size: 8px;
-  }
-  
-  .delete-link {
-    color: #ff0000; /* Choose the desired color for the delete link */
-    margin-top: 10px; /* Adjust the margin-top value as per your design */
-    display: block; /* or inline-block based on your layout requirements */
-  }
-  

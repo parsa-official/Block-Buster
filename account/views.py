@@ -10,8 +10,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import PasswordResetView, PasswordResetConfirmView, PasswordChangeView
 from .forms import UserRegistrationForm,UserLoginForm,EditProfileForm, ChangeProfilePictureForm
 from .models import Profile,FavoriteMovie
-from cinema.models import Movie
-from django.views.generic import DeleteView
+from django.shortcuts import redirect, get_object_or_404
 
 class UserRegisterView(View):
 	form_class = UserRegistrationForm
@@ -128,9 +127,17 @@ class FavoriteMovieListView(LoginRequiredMixin, View):
     def get(self, request):
         favorite_movies = FavoriteMovie.objects.filter(user=request.user)
         return render(request, 'account/user_favorite_movies.html', {'favorite_movies': favorite_movies})
-    
-class FavoriteMovieDeleteView(DeleteView):
-    pass
+
+class FavoriteMovieEditView(LoginRequiredMixin, View):
+    def get(self, request):
+        favorite_movies = FavoriteMovie.objects.filter(user=request.user)
+        return render(request, 'account/user_favorite_movies_edit.html', {'favorite_movies': favorite_movies})
+
+class FavoriteMovieDeleteView(LoginRequiredMixin, View):
+    def get(self, request, movie_id):
+        favorite_movie = get_object_or_404(FavoriteMovie, id=movie_id, user=request.user)
+        favorite_movie.delete()
+        return redirect('account:favorite_movies_edit')  # Redirect to the favorite movies list after deletion
 
 class ChangeProfilePictureView(LoginRequiredMixin, View):
     form_class = ChangeProfilePictureForm
