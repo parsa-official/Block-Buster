@@ -67,10 +67,10 @@
                 <div class="topbar-filter user">
                     <p>Found <span>{{favorite_movies.count}}</span> in total</p>
                     <label>Sort by:</label>
-                    <select onchange="window.location.href = this.value;">
-                        <option value="{% url 'account:favorite_movies' %}">Movies</option>
-                        <option value="{% url 'account:profile' %}">Series and TV Shows</option>
-                      </select>
+                    <select>
+                        <option value="range">Movies</option>
+                        <option value="saab">Series and TVShows</option>
+                    </select>
                     <a href="{% url 'account:favorite_movies' %}" class="grid"><i class="ion-grid active"></i></a>
                 </div>
                 
@@ -87,24 +87,18 @@
                                 <i class="ion-android-star"></i>
                                 <span>{{ favorite_movie.movie.rating }}</span>  
                             </p>
-                            <!-- <p>
+                            <p>
                                 <i style="color: red;">❌</i>
                                 <span>
                                     <a href="{% url 'account:delete_favorite_movie' movie_id=favorite_movie.id %}"style="color: rgb(233, 104, 104);">&nbsp;Remove</a>
                                 </span>    
-                            </p>                           -->
+                            </p>                          
                         </div>
                     </div>                    
                     {% endfor %}
                 </div>
 				<div class="topbar-filter">
 				</div>
-                <div class="row">
-                    <div class="col-md-5"></div>
-                    <div class="col-md-2">
-                        <a href="{% url 'account:favorite_movies_edit' %}" class="redbtn">Edit list</a>
-                    </div>
-                </div>
 			</div>
 		</div>
 	</div>

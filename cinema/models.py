@@ -75,8 +75,6 @@ class Cast(models.Model):
 class Comment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='ucomments')
     movie = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name='mcomments')
-    reply = models.ForeignKey('self', on_delete=models.CASCADE, related_name='rcomments', blank=True, null=True)
-    is_reply = models.BooleanField(default=False)
     body = models.TextField(max_length=400)
     created = models.DateTimeField(auto_now_add=True)
     liked_users = models.ManyToManyField(User, related_name='liked_comments', blank=True)
