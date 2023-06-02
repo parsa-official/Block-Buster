@@ -70,7 +70,7 @@ class MovieDetailView(DetailView):
             if requested_url != canonical_url:
                 return redirect(canonical_url)
 
-            comments = Comment.objects.filter(movie=object, is_reply=False).order_by('-created')
+            comments = Comment.objects.filter(movie=object).order_by('-created')
             comment_count = comments.count()
             is_favorite = False
             if request.user.is_authenticated:

@@ -8,4 +8,5 @@ urlpatterns = [
     path('grid/', views.SerieGridView.as_view(), name='series_grid'),
     path('<int:pk>/<slug:slug>/', views.SerieDetailView.as_view(), name='serie_detail'),
     path('<int:pk>/', views.SerieDetailView.as_view(), name='serie_detail_by_id'),
+    path('favorite_series/add/', views.FavoriteTVShowCreateView.as_view(), name='favorite_serie_create')
 ]

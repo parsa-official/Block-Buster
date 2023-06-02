@@ -41,7 +41,7 @@
                             {% if is_favorite %}
                                 <a href="{% url 'account:favorite_movies' %}" class="parent-btn"><i class="ion-heart"></i> In your Favorites</a>
                             {% else %}
-                                <a href="{% url 'cinema:favorite-movie-create' %}?movie_id={{ movie.id }}" class="parent-btn">
+                                <a href="{% url 'cinema:favorite_movie_create' %}?movie_id={{ movie.id }}" class="parent-btn">
                                     <i class="ion-heart"></i> Add to Favorite
                                 </a>
                             {% endif %}

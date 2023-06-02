@@ -65,11 +65,11 @@
 			</div>
             <div class="col-md-9 col-sm-12 col-xs-12">
                 <div class="topbar-filter user">
-                    <p>Found <span>{{favorite_movies.count}}</span> in total</p>
+                    <p>Found <span>{{favorite_movies.count}} Movie</span> in your Favorites</p>
                     <label>Sort by:</label>
                     <select onchange="window.location.href = this.value;">
                         <option value="{% url 'account:favorite_movies' %}">Movies</option>
-                        <option value="{% url 'account:profile' %}">Series and TV Shows</option>
+                        <option value="{% url 'account:favorite_series' %}">Series and TV Shows</option>
                       </select>
                     <a href="{% url 'account:favorite_movies' %}" class="grid"><i class="ion-grid active"></i></a>
                 </div>

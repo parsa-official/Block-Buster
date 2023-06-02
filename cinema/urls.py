@@ -9,7 +9,5 @@ urlpatterns = [
     path('<int:pk>/<slug:slug>/', views.MovieDetailView.as_view(), name='movie_detail'),
     path('<int:pk>/', views.MovieDetailView.as_view(), name='movie_detail_by_id'),
     path('search_results/', views.SearchMoviesView.as_view(), name='search_results'),
-    path('favorite-movies/add/', views.FavoriteMovieCreateView.as_view(), name='favorite-movie-create'),
-    # path('favorite-movies/delete/<int:pk>/', views.FavoriteMovieDeleteView.as_view(), name='favorite-movie-delete'),
-
+    path('favorite_movies/add/', views.FavoriteMovieCreateView.as_view(), name='favorite_movie_create'),
 ]

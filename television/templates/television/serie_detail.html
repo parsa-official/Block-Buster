@@ -36,13 +36,31 @@
 			<div class="col-md-8 col-sm-12 col-xs-12">
 				<div class="movie-single-ct main-content">
 					<h1 class="bd-hd">{{ serie.title }}</h1>
-					<div class="social-btn">
-						<a href="#" class="parent-btn"><i class="ion-heart"></i> Add to Favorite</a>	
-					</div>
+                    <div class="social-btn">
+                        {% if request.user.is_authenticated %}
+                            {% if is_favorite %}
+                                <a href="{% url 'account:favorite_series' %}" class="parent-btn"><i class="ion-heart"></i> In your Favorites</a>
+                            {% else %}
+                                <a href="{% url 'television:favorite_serie_create' %}?tvshow_id={{ serie.id }}" class="parent-btn">
+
+                                    <i class="ion-heart"></i> Add to Favorite
+                                </a>
+                            {% endif %}
+                        {% endif %}  
+                        <div class="hover-bnt">
+							<a href="#" class="parent-btn"><i class="ion-android-share-alt"></i>share</a>
+							<div class="hvr-item">
+								<a href="#" class="hvr-grow"><i class="ion-social-facebook"></i></a>
+								<a href="#" class="hvr-grow"><i class="ion-social-twitter"></i></a>
+								<a href="#" class="hvr-grow"><i class="ion-social-googleplus"></i></a>
+								<a href="#" class="hvr-grow"><i class="ion-social-youtube"></i></a>
+							</div>
+						</div>  
+                    </div>
 					<div class="movie-rate">
 						<div class="rate">
 							<i class="ion-android-star"></i>
-							<p><span>{{ serie.rating }}</span> <a>IMDB</a></p>
+							<p><span>{{ serie.rating }}</span> <a href="https://www.imdb.com/title/tt{{ serie.imdb_id }}">IMDB</a></p>
 						</div>
 					</div>
 					<div class="movie-tabs">

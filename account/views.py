@@ -9,7 +9,7 @@ from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import PasswordResetView, PasswordResetConfirmView, PasswordChangeView
 from .forms import UserRegistrationForm,UserLoginForm,EditProfileForm, ChangeProfilePictureForm
-from .models import Profile,FavoriteMovie
+from .models import Profile,FavoriteMovie,FavoriteTVShow
 from django.shortcuts import redirect, get_object_or_404
 
 class UserRegisterView(View):
@@ -122,7 +122,7 @@ class EditProfileView(LoginRequiredMixin, FormView):
 
         return super().form_valid(form)
 
-
+#Movies FAVORITE
 class FavoriteMovieListView(LoginRequiredMixin, View):
     def get(self, request):
         favorite_movies = FavoriteMovie.objects.filter(user=request.user)
@@ -137,7 +137,26 @@ class FavoriteMovieDeleteView(LoginRequiredMixin, View):
     def get(self, request, movie_id):
         favorite_movie = get_object_or_404(FavoriteMovie, id=movie_id, user=request.user)
         favorite_movie.delete()
-        return redirect('account:favorite_movies_edit')  # Redirect to the favorite movies list after deletion
+        return redirect('account:favorite_movies_edit')
+
+
+#Series FAVORITE
+class FavoriteTVShowListView(LoginRequiredMixin, View):
+    def get(self, request):
+        favorite_series = FavoriteTVShow.objects.filter(user=request.user)
+        return render(request, 'account/user_favorite_series.html', {'favorite_series': favorite_series})
+    
+class FavoriteTVShowEditView(LoginRequiredMixin, View):
+    def get(self, request):
+        favorite_series = FavoriteTVShow.objects.filter(user=request.user)
+        return render(request, 'account/user_favorite_series_edit.html', {'favorite_series': favorite_series})    
+
+class FavoriteTVShowDeleteView(LoginRequiredMixin, View):
+    def get(self, request, tvshow_id):
+        favorite_serie = get_object_or_404(FavoriteTVShow, id=tvshow_id, user=request.user)
+        favorite_serie.delete()
+        return redirect('account:favorite_series_edit')
+
 
 class ChangeProfilePictureView(LoginRequiredMixin, View):
     form_class = ChangeProfilePictureForm

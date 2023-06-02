@@ -71,26 +71,26 @@
                         <option value="range">Movies</option>
                         <option value="saab">Series and TVShows</option>
                     </select>
-                    <a href="{% url 'account:favorite_movies' %}" class="grid"><i class="ion-grid active"></i></a>
+                    <a href="{% url 'account:favorite_series' %}" class="grid"><i class="ion-grid active"></i></a>
                 </div>
                 
                 <div class="flex-wrap-movielist grid-fav">
-                    {% for favorite_movie in favorite_movies %}
+                    {% for favorite_serie in favorite_series %}
                     <div class="movie-item-style-2 movie-item-style-1 style-3">
-                        <img src="{{ favorite_movie.movie.image.url }}" alt="">
+                        <img src="{{ favorite_serie.tvshow.image.url }}" alt="">
                         <div class="hvr-inner">
-                            <a href="{{ favorite_movie.movie.get_absolute_url }}">Read more <i class="ion-android-arrow-dropright"></i></a>
+                            <a href="{{ favorite_serie.tvshow.get_absolute_url }}">Read more <i class="ion-android-arrow-dropright"></i></a>
                         </div>
                         <div class="mv-item-infor">
-                            <h6><a href="{{ favorite_movie.movie.get_absolute_url }}">{{ favorite_movie.movie.title }}</a></h6>
+                            <h6><a href="{{ favorite_serie.tvshow.get_absolute_url }}">{{ favorite_serie.tvshow.title }}</a></h6>
                             <p class="rate">
                                 <i class="ion-android-star"></i>
-                                <span>{{ favorite_movie.movie.rating }}</span>  
+                                <span>{{ favorite_serie.tvshow.rating }}</span>  
                             </p>
                             <p>
                                 <i style="color: red;">❌</i>
                                 <span>
-                                    <a href="{% url 'account:delete_favorite_movie' movie_id=favorite_movie.id %}"style="color: rgb(233, 104, 104);">&nbsp;Remove</a>
+                                    <a href="{% url 'account:delete_favorite_serie' tvshow_id=favorite_serie.id %}"style="color: rgb(233, 104, 104);">&nbsp;Remove</a>
                                 </span>    
                             </p>                          
                         </div>

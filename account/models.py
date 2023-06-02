@@ -1,6 +1,7 @@
 from django.core.validators import RegexValidator
 from django.db import models
 from cinema.models import Movie
+from television.models import TVShow
 from django.utils import timezone
 from django.contrib.auth.models import User
 
@@ -35,8 +36,15 @@ class Profile(models.Model):
         return self.vip_status and self.vip_expiration and self.vip_expiration > timezone.now()
 
 class FavoriteMovie(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='userfavs')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_mfavs')
     movie = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name='mfavs')
 
     def __str__(self):
         return f"{self.user.username} - {self.movie.title}" 
+
+class FavoriteTVShow(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_tvfavs')
+    tvshow = models.ForeignKey(TVShow, on_delete=models.CASCADE, related_name='tvfavs')
+
+    def __str__(self):
+        return f"{self.user.username} - {self.tvshow.title}"     
