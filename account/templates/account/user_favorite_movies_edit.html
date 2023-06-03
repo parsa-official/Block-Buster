@@ -67,10 +67,10 @@
                 <div class="topbar-filter user">
                     <p>Found <span>{{favorite_movies.count}}</span> in total</p>
                     <label>Sort by:</label>
-                    <select>
-                        <option value="range">Movies</option>
-                        <option value="saab">Series and TVShows</option>
-                    </select>
+                    <select onchange="window.location.href = this.value;">
+                        <option value="{% url 'account:favorite_movies' %}">Movies</option>
+                        <option value="{% url 'account:favorite_series' %}">Series and TV Shows</option>
+                      </select>
                     <a href="{% url 'account:favorite_movies' %}" class="grid"><i class="ion-grid active"></i></a>
                 </div>
                 

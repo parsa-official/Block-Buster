@@ -11,6 +11,7 @@ from django.contrib.auth.views import PasswordResetView, PasswordResetConfirmVie
 from .forms import UserRegistrationForm,UserLoginForm,EditProfileForm, ChangeProfilePictureForm
 from .models import Profile,FavoriteMovie,FavoriteTVShow
 from django.shortcuts import redirect, get_object_or_404
+from django.core.exceptions import ObjectDoesNotExist
 
 class UserRegisterView(View):
 	form_class = UserRegistrationForm
@@ -90,8 +91,14 @@ class EditProfileView(LoginRequiredMixin, FormView):
     success_url = '/user/'
 
     def form_valid(self, form):
-        profile = self.request.user.profile
-        user = profile.user
+        try:
+            profile = self.request.user.profile
+            user = profile.user
+        except ObjectDoesNotExist:
+            # If the profile does not exist, create a new one
+            profile = Profile(user=self.request.user)
+            user = self.request.user
+
 
         # Validate username uniqueness
         new_username = form.cleaned_data['username']

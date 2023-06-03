@@ -87,24 +87,20 @@
                                 <i class="ion-android-star"></i>
                                 <span>{{ favorite_movie.movie.rating }}</span>  
                             </p>
-                            <!-- <p>
-                                <i style="color: red;">❌</i>
-                                <span>
-                                    <a href="{% url 'account:delete_favorite_movie' movie_id=favorite_movie.id %}"style="color: rgb(233, 104, 104);">&nbsp;Remove</a>
-                                </span>    
-                            </p>                           -->
                         </div>
                     </div>                    
                     {% endfor %}
                 </div>
 				<div class="topbar-filter">
 				</div>
+                {% if favorite_movies %}
                 <div class="row">
                     <div class="col-md-5"></div>
                     <div class="col-md-2">
                         <a href="{% url 'account:favorite_movies_edit' %}" class="redbtn">Edit list</a>
                     </div>
                 </div>
+                {% endif %}
 			</div>
 		</div>
 	</div>

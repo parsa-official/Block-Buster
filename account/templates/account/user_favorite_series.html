@@ -93,12 +93,14 @@
                 </div>
 				<div class="topbar-filter">
 				</div>
+                {% if favorite_series %}
                 <div class="row">
                     <div class="col-md-5"></div>
                     <div class="col-md-2">
                         <a href="{% url 'account:favorite_series_edit' %}" class="redbtn">Edit list</a>
                     </div>
                 </div>
+                {% endif %}
 			</div>
 		</div>
 	</div>
