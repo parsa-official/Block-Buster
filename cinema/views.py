@@ -32,7 +32,7 @@ class MovieGridView(ListView):
     model = Movie
     context_object_name = 'movies'
     template_name = 'cinema/movies_grid.html'
-    paginate_by = 8
+    paginate_by = 16
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -120,12 +120,33 @@ class SearchMoviesView(View):
         return render(request, 'cinema/search_results.html')
     
     def post(self, request):
-        searched = request.POST.get('searched', '')
+      searched = request.POST.get('searched', '')
+      media_type = request.POST.get('media_type', 'all')
+      if not searched:  # Empty search query
+        context = {'searched': searched, 'movies': [], 'series': [], 'celebs': [], 'media_type': media_type}
+        return render(request, 'cinema/search_results.html', context)
+
+      if media_type == 'movies':
+        movies = Movie.objects.filter(title__icontains=searched)
+        series = []
+        celebs = []
+      elif media_type == 'series':
+        movies = []
+        series = TVShow.objects.filter(title__icontains=searched)
+        celebs = []
+      elif media_type == 'celebs':
+        movies = []
+        series = []
+        celebs = Person.objects.filter(name__icontains=searched)
+      else:
         movies = Movie.objects.filter(title__icontains=searched)
         series = TVShow.objects.filter(title__icontains=searched)
         celebs = Person.objects.filter(name__icontains=searched)
-        context = {'searched': searched, 'movies': movies, 'series': series, 'celebs': celebs}
-        return render(request, 'cinema/search_results.html', context)
+        media_type = 'all'
+      context = {'searched': searched, 'movies': movies, 'series': series, 'celebs': celebs, 'media_type': media_type}
+      return render(request, 'cinema/search_results.html', context)
+
+
 
 
 class FavoriteMovieCreateView(LoginRequiredMixin, View):

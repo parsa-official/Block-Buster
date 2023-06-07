@@ -128,10 +128,18 @@
 	    </nav>
 	    
 	    <!-- top search form -->
-			<form class="top-search" method="POST" action="{% url 'cinema:search_results' %}">
-				{% csrf_token %}
-				<input class="form-control me-2" type="search" placeholder="Search for a movie, TV Show or celebrity that you are looking for ... " aria-label="Search" name="searched">
-			</form>
+            <form class="top-search" method="POST" action="{% url 'cinema:search_results' %}">
+                {% csrf_token %}
+                <select name="media_type">
+                    <option value="all" {% if media_type == 'all' %}selected{% endif %}>All</option>
+                    <option value="movies" {% if media_type == 'movies' %}selected{% endif %}>Movies</option>
+                    <option value="series" {% if media_type == 'series' %}selected{% endif %}>TV Shows</option>
+                    <option value="celebs" {% if media_type == 'celebs' %}selected{% endif %}>Celebrities</option>
+                 </select>
+                <input class="form-control me-2" type="search" placeholder="Search for a movie, TV Show or celebrity that you are looking for..." aria-label="Search" name="searched" required>
+                <!-- <button class="top-search redbtn" type="submit">Search</button> -->
+            </form>
+          
             <br>
             {% include 'inc/messages.html' %}
 	</div>

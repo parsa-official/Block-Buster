@@ -4,13 +4,7 @@ from django.views.generic import ListView, DetailView
 from .models import Trailer,BlogArticle
 from django.views.generic import ListView
 from cinema.models import Movie
-
-
-# class SlideShowView(ListView):
-#     model = Movie
-#     context_object_name = 'movies'
-#     template_name = 'blog/home.html'
-
+from television.models import TVShow
 
 class Home(ListView):
     model = Trailer
@@ -20,6 +14,7 @@ class Home(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['movies'] = Movie.objects.all()
+        context['series'] = TVShow.objects.all()
         context['blogs'] = BlogArticle.objects.all()
         return context
 

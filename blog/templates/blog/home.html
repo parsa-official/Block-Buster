@@ -47,7 +47,7 @@
 		<div class="col-md-12">
 			<div class="title-hd">
 				
-				<h2>in theater</h2>
+				<h2>Movies</h2>
 				<a href="{% url 'cinema:movies_list' %}" class="viewall">View all <i class="ion-ios-arrow-right"></i></a>
 			</div>
 			<div class="tabs">
@@ -87,6 +87,52 @@
 	</div>
 </div>
 <!-- end of Movies list part -->
+<!-- Series and TVShows list part -->
+<div class="movie-items  full-width">
+	<div class="row">
+		<div class="col-md-12">
+			<div class="title-hd">
+				
+				<h2>Series and TVShows</h2>
+				<a href="{% url 'television:series_list' %}" class="viewall">View all <i class="ion-ios-arrow-right"></i></a>
+			</div>
+			<div class="tabs">
+				<ul class="tab-links">
+					<li class="active"><a href="#tab1-h2">#Popular</a></li>
+					<li><a href="#tab2-h2"> #Coming soon</a></li>
+					<li><a href="#tab3-h2">  #Top rated  </a></li>
+					<li><a href="#tab4-h2"> #Most reviewed</a></li>                        
+				</ul>
+				<br>
+			    <div class="tab-content">
+			        <div id="tab1-h2" class="tab active">
+			            <div class="row">
+			            	<div class="slick-multiItem2">
+								{% for serie in series %}
+									<div class="slide-it">
+										<div class="movie-item">
+											<div class="mv-img">
+												<img src="{{ serie.image.url }}" alt="">
+											</div>
+											<div class="hvr-inner">
+												<a  href="{{ serie.get_absolute_url }}"> Read more <i class="ion-android-arrow-dropright"></i> </a>
+											</div>
+											<div class="title-in">
+												<h6><a href="#">{{ serie.title }}</a></h6>
+												<p><i class="ion-android-star"></i><span> &nbsp;{{ serie.rating }}</span> /10</p>
+											</div>
+										</div>
+									</div>
+								{% endfor %}
+			            	</div>
+			            </div>
+			        </div>
+			    </div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- end of Series and TVShows list part -->
 <!-- Begin Trailer part -->
 <div class="trailers full-width">
 	<div class="row ipad-width">
